@@ -197,7 +197,7 @@ export default function formatLocale(locale) {
       if ((!loose && i != string.length) || i < 0) return null;
 
       // If a UNIX timestamp is specified, return it.
-      if ("Q" in d) return new Date(d.Q);
+      if ("Q" in d) return new Date(d.Q + (d.L || 0));
       if ("s" in d) return new Date(d.s * 1000 + ("L" in d ? d.L : 0));
 
       // If this is utcParse, never use the local timezone.
