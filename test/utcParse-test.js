@@ -204,3 +204,14 @@ tape("utcParse(\"\")(date) parses Unix timestamps in seconds.micro", function(te
   test.deepEqual(p("631152000.123456"), date.utc(1990, 0, 1, 0, 0, 0, 123.456));
   test.end();
 });
+
+tape("utcParse can expose base year (handle leap current year)", function(test) {
+  var p = timeFormat.utcParse("%b %d %H:%M:%S");
+  test.deepEqual(p("Feb 29 12:34:56", false, 2020), date.utc(2020, 1, 29, 12, 34, 56)); 
+ 
+  // should have no effect if year is present 
+  p = timeFormat.utcParse("%b %d %Y %H:%M:%S");
+  test.deepEqual(p("Feb 29 2016 12:34:56", false, 2020), date.utc(2016, 1, 29, 12, 34, 56)); 
+
+  test.end();
+});

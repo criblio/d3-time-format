@@ -190,8 +190,8 @@ export default function formatLocale(locale) {
   }
 
   function newParse(specifier, Z) {
-    return function(string, loose) {
-      var d = newDate(1900, undefined, 1),
+    return function(string, loose, initYear, initMonth, initDay) {
+      var d = newDate(initYear || 1900, initMonth || undefined, initDay || 1),
           i = parseSpecifier(d, specifier, string += "", 0),
           week, day;
       if ((!loose && i != string.length) || i < 0) return null;
