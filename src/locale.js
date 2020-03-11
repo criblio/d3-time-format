@@ -190,15 +190,20 @@ export default function formatLocale(locale) {
   }
 
   function newParse(specifier, Z) {
-    return function(string, loose, initYear, initMonth, initDay) {
-      var d = newDate(initYear || 1900, initMonth || undefined, initDay || 1),
+    return function(string, loose) {
+      var d = newDate(1900, undefined, 1),
           i = parseSpecifier(d, specifier, string += "", 0),
           week, day;
       if ((!loose && i != string.length) || i < 0) return null;
 
+      function addParts(date) {
+        date._parsedParts = d;
+        return date;
+      }
+
       // If a UNIX timestamp is specified, return it.
-      if ("Q" in d) return new Date(d.Q + (d.L || 0));
-      if ("s" in d) return new Date(d.s * 1000 + ("L" in d ? d.L : 0));
+      if ("Q" in d) return addParts(new Date(d.Q + (d.L || 0)));
+      if ("s" in d) return addParts(new Date(d.s * 1000 + ("L" in d ? d.L : 0)));
 
       // If this is utcParse, never use the local timezone.
       if (Z && !("Z" in d)) d.Z = 0;
@@ -240,11 +245,11 @@ export default function formatLocale(locale) {
       if ("Z" in d) {
         d.H += d.Z / 100 | 0;
         d.M += d.Z % 100;
-        return utcDate(d);
+        return addParts(utcDate(d));
       }
 
       // Otherwise, all fields are in local time.
-      return localDate(d);
+      return addParts(localDate(d));
     };
   }
 

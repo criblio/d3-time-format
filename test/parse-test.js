@@ -321,5 +321,3 @@ tape("timeParse(\"%m/%d/%Y %Z\")(date) parses timezone offset", function(test) {
   test.deepEqual(p("01/02/1990 -0800+", true), date.local(1990, 0, 2, 0));
   test.end();
 });
-
-
