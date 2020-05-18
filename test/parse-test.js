@@ -321,3 +321,13 @@ tape("timeParse(\"%m/%d/%Y %Z\")(date) parses timezone offset", function(test) {
   test.deepEqual(p("01/02/1990 -0800+", true), date.local(1990, 0, 2, 0));
   test.end();
 });
+
+tape("timeParse(\"%Y%m%dT%H:%M:%S.%f%Z\") accepts nanosecond ", function(test) {
+  var p = timeFormat.utcParse("%Y%m%dT%H:%M:%S.%f%Z");
+  // base-case microsecond + millis being a float
+  test.deepEqual(p("20200420T16:20:00.123456Z", true), date.utc(2020, 03, 20, 16, 20, 0, 123.456));
+  // nanosecond case + millis being a float
+  test.deepEqual(p("20200420T16:20:00.123456789Z", true), date.utc(2020, 03, 20, 16, 20, 0, 123.456789));
+
+  test.end();
+});

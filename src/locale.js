@@ -491,8 +491,9 @@ function parseMilliseconds(d, string, i) {
 }
 
 function parseMicroseconds(d, string, i) {
-  var n = numberRe.exec(string.slice(i, i + 6));
-  return n ? (d.L = Math.floor(n[0] / 1000), i + n[0].length) : -1;
+  var n = numberRe.exec(string.slice(i, i + 9));
+  var divBy = n[0].length > 6 ? 1000000 : 1000;
+  return n ? (d.L = n[0] / divBy, i + n[0].length) : -1;
 }
 
 function parseLiteralPercent(d, string, i) {
