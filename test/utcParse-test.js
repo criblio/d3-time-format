@@ -110,6 +110,10 @@ tape("utcParse(\"\")(date) parses timezone offset", function(test) {
   test.deepEqual(p("01/02/1990 +0100"), date.utc(1990, 0, 1, 23));
   test.deepEqual(p("01/02/1990 -0100"), date.utc(1990, 0, 2, 1));
   test.deepEqual(p("01/02/1990 -0800"), date.local(1990, 0, 2));
+  test.deepEqual(p("01/02/1990 PST"), date.local(1990, 0, 2));
+  test.deepEqual(p("01/02/1990 PDT"), date.local(1990, 0, 1, 23));
+  test.deepEqual(p("01/02/1990 GMT"), date.utc(1990, 0, 2));
+  test.deepEqual(p("01/02/1990 IST"), date.utc(1990, 0, 1, 23));
   test.end();
 });
 

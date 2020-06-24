@@ -445,9 +445,40 @@ function parseYear(d, string, i) {
   return n ? (d.y = +n[0] + (+n[0] > 68 ? 1900 : 2000), i + n[0].length) : -1;
 }
 
+// List of recognized abvreviated timezones. 
+// NOTE: there is no standard list of abreviated timezones - there are cases where an abbreviated timezone 
+// can have more than 1 interpretation, e.g. CST = Central Standard Time OR China Standard Time OR Cuba Standard Time
+// source https://www.timetemperature.com/abbreviations/united_states_time_zone_abbreviations.shtml
+// format is: <abbr>: <hour><min>
+const TZ = {
+  // US timezones
+  AST: -400,
+  EST: -500, EDT: -400,
+  CST: -600, CDT: -500,
+  MST: -700, MDT: -600,
+  PST: -800, PDT: -700,
+  AKST: -900, AKDT: -800,
+  HST: -1000, HAST: -1000, HADT: -900,
+  SST: -1100, SDT: -1000,
+  CHST: 1000,
+  // European timezones 
+  BST: 100, IST: 100,
+  CEST: 2, CET: 100,
+  EEST: 300, EET: 200,
+  GMT: 0,
+  KUYT: 400, 
+  MSD: 400, MSK: 300,
+  SAMT: 400, TRT: 300,
+  WEST: 100, WET: 0  
+}
+const TZ_REGEX = new RegExp(`^(Z)|(?:([+-]\\d\\d)(?::?(\\d\\d))?)|^([A-Z]{1,4})`);
 function parseZone(d, string, i) {
-  var n = /^(Z)|([+-]\d\d)(?::?(\d\d))?/.exec(string.slice(i, i + 6));
-  return n ? (d.Z = n[1] ? 0 : -(n[2] + (n[3] || "00")), i + n[0].length) : -1;
+  var n = TZ_REGEX.exec(string.slice(i, i + 6));
+  if(!n) return -1;
+  if(n[1])      d.Z = 0;
+  else if(n[2]) d.Z = -(n[2] + (n[3] || "00"))
+  else if(n[4]) d.Z = -TZ[n[4]] || 0;
+  return i + n[0].length;
 }
 
 function parseQuarter(d, string, i) {
