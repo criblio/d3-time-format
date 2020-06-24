@@ -463,13 +463,13 @@ let TZ = {
   CHST: 1000,
   // European timezones 
   BST: 100, IST: 100,
-  CEST: 2, CET: 100,
+  CEST: 200, CET: 100,
   EEST: 300, EET: 200,
-  GMT: 0,
+  GMT: 0, UTC: 0, WET: 0,
   KUYT: 400, 
   MSD: 400, MSK: 300,
   SAMT: 400, TRT: 300,
-  WEST: 100, WET: 0  
+  WEST: 100
 }
 
 // allow users to update the list of abbreviated timezones that are supported
