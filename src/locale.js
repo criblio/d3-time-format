@@ -450,7 +450,7 @@ function parseYear(d, string, i) {
 // can have more than 1 interpretation, e.g. CST = Central Standard Time OR China Standard Time OR Cuba Standard Time
 // source https://www.timetemperature.com/abbreviations/united_states_time_zone_abbreviations.shtml
 // format is: <abbr>: <hour><min>
-const TZ = {
+let TZ = {
   // US timezones
   AST: -400,
   EST: -500, EDT: -400,
@@ -471,13 +471,23 @@ const TZ = {
   SAMT: 400, TRT: 300,
   WEST: 100, WET: 0  
 }
-const TZ_REGEX = new RegExp(`^(Z)|(?:([+-]\\d\\d)(?::?(\\d\\d))?)|^([A-Z]{1,4})`);
+
+// allow users to update the list of abbreviated timezones that are supported
+export function setAbbrTimezone(tz) {
+  TZ = tz;
+}
+
+const TZ_REGEX = new RegExp(`^(Z)|(?:([+-]\\d\\d)(?::?(\\d\\d))?)|^([A-Z]{1,5})`);
 function parseZone(d, string, i) {
   var n = TZ_REGEX.exec(string.slice(i, i + 6));
   if(!n) return -1;
   if(n[1])      d.Z = 0;
-  else if(n[2]) d.Z = -(n[2] + (n[3] || "00"))
-  else if(n[4]) d.Z = -TZ[n[4]] || 0;
+  else if(n[2]) d.Z = -(n[2] + (n[3] || "00"));
+  else if(n[4]) {
+    const offset = -TZ[n[4]];
+    if(Number.isNaN(offset)) return -1; // tz not found
+    d.Z = offset;
+  }
   return i + n[0].length;
 }
 
