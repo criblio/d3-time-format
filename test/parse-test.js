@@ -208,12 +208,22 @@ tape("timeParse(\"%X\")(date) parses locale time", function(test) {
 tape("timeParse(\"%L\")(date) parses milliseconds", function(test) {
   var p = timeFormat.timeParse("%L");
   test.deepEqual(p("432"), date.local(1900, 0, 1, 0, 0, 0, 432));
+  test.deepEqual(p("42"), date.local(1900, 0, 1, 0, 0, 0, 420));
+  test.deepEqual(p("4"), date.local(1900, 0, 1, 0, 0, 0, 400));
   test.end();
 });
 
 tape("timeParse(\"%f\")(date) parses microseconds", function(test) {
   var p = timeFormat.timeParse("%f");
+  test.deepEqual(p("432000000"), date.local(1900, 0, 1, 0, 0, 0, 432));
+  test.deepEqual(p("43200000"), date.local(1900, 0, 1, 0, 0, 0, 432));
+  test.deepEqual(p("4320000"), date.local(1900, 0, 1, 0, 0, 0, 432));
   test.deepEqual(p("432000"), date.local(1900, 0, 1, 0, 0, 0, 432));
+  test.deepEqual(p("43200"), date.local(1900, 0, 1, 0, 0, 0, 432));
+  test.deepEqual(p("4320"), date.local(1900, 0, 1, 0, 0, 0, 432));
+  test.deepEqual(p("432"), date.local(1900, 0, 1, 0, 0, 0, 432));
+  test.deepEqual(p("42"), date.local(1900, 0, 1, 0, 0, 0, 420));
+  test.deepEqual(p("4"), date.local(1900, 0, 1, 0, 0, 0, 400));
   test.end();
 });
 

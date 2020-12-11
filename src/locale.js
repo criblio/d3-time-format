@@ -528,13 +528,23 @@ function parseSeconds(d, string, i) {
 
 function parseMilliseconds(d, string, i) {
   var n = numberRe.exec(string.slice(i, i + 3));
-  return n ? (d.L = +n[0], i + n[0].length) : -1;
+  var val = n[0];
+  if(val.length < 3) { // add any missing trailing 0s 
+    val = n[0] + '0'.repeat(3 - val.length);
+  } 
+  d.L = +val; 
+  return i + n[0].length;
 }
 
 function parseMicroseconds(d, string, i) {
   var n = numberRe.exec(string.slice(i, i + 9));
-  var divBy = n[0].length > 6 ? 1000000 : 1000;
-  return n ? (d.L = n[0] / divBy, i + n[0].length) : -1;
+  if (!n) return -1;
+  var val = n[0];
+  if(val.length < 9) { // add any missing trailing 0s 
+    val = val + '0'.repeat(9 - val.length);
+  }
+  d.L = +val / 1000000;
+  return i + n[0].length;
 }
 
 function parseLiteralPercent(d, string, i) {
