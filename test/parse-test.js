@@ -210,6 +210,7 @@ tape("timeParse(\"%L\")(date) parses milliseconds", function(test) {
   test.deepEqual(p("432"), date.local(1900, 0, 1, 0, 0, 0, 432));
   test.deepEqual(p("42"), date.local(1900, 0, 1, 0, 0, 0, 420));
   test.deepEqual(p("4"), date.local(1900, 0, 1, 0, 0, 0, 400));
+  test.deepEqual(p(""), null);
   test.end();
 });
 
@@ -224,6 +225,7 @@ tape("timeParse(\"%f\")(date) parses microseconds", function(test) {
   test.deepEqual(p("432"), date.local(1900, 0, 1, 0, 0, 0, 432));
   test.deepEqual(p("42"), date.local(1900, 0, 1, 0, 0, 0, 420));
   test.deepEqual(p("4"), date.local(1900, 0, 1, 0, 0, 0, 400));
+  test.deepEqual(p(""), null);
   test.end();
 });
 
