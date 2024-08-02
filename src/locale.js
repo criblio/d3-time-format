@@ -528,6 +528,7 @@ function parseSeconds(d, string, i) {
 
 function parseMilliseconds(d, string, i) {
   var n = numberRe.exec(string.slice(i, i + 3));
+  if (!n) return -1;
   var val = n[0];
   if(val.length < 3) { // add any missing trailing 0s 
     val = n[0] + '0'.repeat(3 - val.length);
